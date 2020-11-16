@@ -277,8 +277,13 @@ class Service(object):
 
         for datainput in inputs:
             newinpt = source.clone()
-            newinpt.data = [datainput.minx, datainput.miny,
-                            datainput.maxx, datainput.maxy]
+
+            try:
+                newinpt.data = [datainput.minx, datainput.miny,
+                                datainput.maxx, datainput.maxy]
+            except AttributeError:
+                newinpt.data = [float(coord) for coord in datainput['data'].split(',')[:4]]
+
             outinputs.append(newinpt)
 
         if len(outinputs) < source.min_occurs:
